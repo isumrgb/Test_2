@@ -6,6 +6,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 function Box(props){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const clickMe = () => {
     alert("리엑트 강의를 마쳤습니다!!");
@@ -28,16 +29,26 @@ function Box(props){
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("✅ 로그인 성공:", userCredential.user);
+      setIsLoggedIn(true); // ✅ 로그인 성공 시 상태 변경
     } catch (error) {
       console.error("❌ 로그인 실패:", error.message);
     }
   }
 
+  // ✅ 로그인 후 화면
+  if (isLoggedIn) {
+    return (
+      <div className="box">
+        <h3>🎉 환영합니다, {email}님!</h3>
+        <p>이제 학습을 시작해보세요.</p>
+        <button onClick={clickMe}>클릭!</button>
+      </div>
+    );
+  }
+
   return (
     <div className="box">
-      Box{props.num}
-      {props.name}
-      <h4>회원가입</h4>
+      <div style={{ textAlign: "center" }}>{props.name}</div>
       <div>
         email : <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
